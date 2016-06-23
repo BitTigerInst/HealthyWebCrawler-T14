@@ -7,18 +7,18 @@
 
 import scrapy
 
-
 class HealthyItem(scrapy.Item):
     # define the fields for your item here like:
+    appurl = scrapy.Field()
     title = scrapy.Field()
-    url = scrapy.Field()
     appid = scrapy.Field()
-    app_name = scrapy.Field()
-    recommended_d = scrapy.Field()
-    recommended_r = scrapy.Field()
+    category = scrapy.Field()
+    cateid = scrapy.Field()
     developer = scrapy.Field()
     rating = scrapy.Field()
-    rating_count = scrapy.Field()
-    update_tm = scrapy.Field()
-    category = scrapy.Field()
-    version = scrapy.Field()
+    ratingct = scrapy.Field()
+    ver = scrapy.Field()
+    updatetm = scrapy.Field()
+    developerrec = scrapy.Field()
+    relatedrec = scrapy.Field()
+

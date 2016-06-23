@@ -56,20 +56,23 @@ class HealthySpider(Spider):
 
             #extract relevent apps first
 
-#           lis_d = page.xpath(u"//h3[text()='开发者应用']/following-sibling::div[@class='second-imgbox'][1]/ul/li")
-#           lis_r = page.xpath(u"//h3[text()='相关应用']/following-sibling::div[@class='second-imgbox'][1]/ul/li")
+            lis_d = page.xpath(u"//h3[text()='开发者应用']/following-sibling::div[@class='second-imgbox'][1]/ul/li")
+            lis_r = page.xpath(u"//h3[text()='相关应用']/following-sibling::div[@class='second-imgbox'][1]/ul/li")
             recommended_d = []
             recommended_r = []
 
-#            for li in lis_r:
-#                url = li.xpath('./a/@href').extract_first()
-#                appid_r = re.match(r'/detail/(.*)', url).group(1) #relevant apps by function
-#                recommended_r.append(appid_r)
-                
-#            for li in lis_d: 
-#                url = li.xpath('./a/@href').extract_first()
-#                appid_d = re.match(r'/detail/(.*)', url).group(1) #relevant apps by the same developer
-#                recommended_r.append(appid_d) 
+            for li in lis_r:
+                url = li.xpath('./a/@href').extract_first()
+                appid_r = re.match(r'/detail/(.*)', url).group(1) #relevant apps by function
+                recommended_r.append(appid_r)
+            
+            print(recommended_r)
+
+            for li in lis_d: 
+                url = li.xpath('./a/@href').extract_first()
+                appid_d = re.match(r'/detail/(.*)', url).group(1) #relevant apps by the same developer
+                recommended_r.append(appid_d) 
+
             app_name = page.xpath('//div[@class="bread-crumb"]/ul/li[position()=3]/text()').extract_first()
             developer = page.xpath('//div[@class="intro-titles"]/p/text()').extract_first()
             rating_url = page.xpath('//div[contains(@class, "star1-hover")]/@class').extract_first()
@@ -79,27 +82,28 @@ class HealthySpider(Spider):
             version = page.xpath('//ul[@class=" cf"]/li[position()=4]/text()').extract_first()
             update_tm = page.xpath('//ul[@class=" cf"]/li[position()=6]/text()').extract_first()
             category_url = page.xpath('//a[contains(@href,"category")]/@href').extract_first()
-            category = re.match(r'/category/(.*)', category_url).group(1)
+            category =page.xpath('//a[contains(@href,"category")]/text()').extract_first() 
+            categoryid = re.match(r'/category/(.*)', category_url).group(1)
 
-            print "url:"+response.url
-            print "app_name:"+app_name
+            print "appurl:"+response.url
             print "developer:"+developer
             print "version:"+version
             print "update date:"+update_tm
-            print "category:"+category
+            print "category name:"+category
+            print "categoryid:"+categoryid
             print "rating:"+rating
             print "rating_count:"+rating_count
 
-            item['url'] = response.url
-            item['app_name'] = app_name
-            item['recommended_d'] = recommended_d
-            item['recommended_r'] = recommended_r
+            item['appurl'] = response.url
+            item['developerrec'] = recommended_d
+            item['relatedrec'] = recommended_r
             item['developer'] = developer
-            item['rating'] = rating 
-            item['rating_count'] = rating_count 
-            item['version'] = version
-            item['update_tm'] = update_tm
+            item['rating'] = rating
+            item['ratingct'] = rating_count
+            item['ver'] = version
+            item['updatetm'] = update_tm
             item['category'] = category
+            item['cateid'] = categoryid
 
             #import pudb; pu.db
             yield item
