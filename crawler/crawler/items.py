@@ -14,6 +14,7 @@ class CrawlerItem(scrapy.Item):
     title = scrapy.Field()
     appid = scrapy.Field()
     appurl = scrapy.Field()
+    imgurl = scrapy.Field()
     category = scrapy.Field()
     cateid = scrapy.Field()
     developer = scrapy.Field()

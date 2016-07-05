@@ -13,7 +13,7 @@ class TopListSpider(scrapy.Spider):
 
 
     def parse(self, response):
-        for page_id in range(1,2):
+        for page_id in range(1,43):
             url = '{0}{1}'.format('http://app.mi.com/topList?page=', str(page_id)) 
             yield scrapy.Request(url, callback=self.parse_page)
         
@@ -29,10 +29,11 @@ class TopListSpider(scrapy.Spider):
             if not a_tag:
                 continue
 
-            #app_name = re.match(r'.*', a_tag.string).group()
+            app_name = re.match(r'.*', a_tag.string).group()
             url = a_tag["href"]
-            #app_id = (re.match(r'/detail/(\d+)', url)).group(1)
-            
+            app_id = (re.match(r'/detail/(\d+)', url)).group(1)
+            current = html_doc.find("span", "current").string
+
             req = scrapy.Request(common_url + url, callback=self.parse_details)
             req.meta["item"] = item
             yield req
@@ -43,6 +44,10 @@ class TopListSpider(scrapy.Spider):
         common_url = 'http://app.mi.com/detail/'
         detail_doc = BeautifulSoup(response.body, "lxml")
 
+        ret = detail_doc.find("div", "app-info")
+        imgurl = ret.find("img")["src"]
+        item['imgurl'] = imgurl
+        
         # get name, developer, category, rating, number of scores
         ret = detail_doc.find("div", "intro-titles")
         p_tag_list = ret.find_all("p")
@@ -55,7 +60,7 @@ class TopListSpider(scrapy.Spider):
         app_rating_count = (re.search(r'\d+', ret.find("span", "app-intro-comment").contents[0])).group()
         app_rating = div_tag_list[1]["class"][1]
         app_rating = re.match(r'star1-(\d+)', app_rating).group(1)
- 
+        
         item['title'] = app_name
         item['appid'] = app_id
         item['appurl'] = common_url + app_id
@@ -110,5 +115,7 @@ class TopListSpider(scrapy.Spider):
 
         item['developerrec'] = recommended_dev_app
         item['relatedrec'] = recommended_app
-
+        
+        print imgurl, app_name, app_id, app_developer, app_category, app_rating_count, app_rating, app_version, app_update_time, \
+              recommended_app, recommended_dev_app, categoryid
         yield item  
