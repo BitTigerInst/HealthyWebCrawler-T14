@@ -7,6 +7,7 @@ from scrapy import Request
 import re
 from scrapy.selector import Selector
 from xiaomiapp.items import XiaomiAppItem
+from collections import defaultdict
 
 # from scrapy.shell import inspect_response
 # from scrapy.utils.response import open_in_browser
@@ -70,16 +71,23 @@ class XiaomiSpider(Spider):
     def parse_details(self, response):
         item = response.meta["item"]
         page = Selector(response)
-        # page_list = page.xpath('//div[@class="second-imgbox"]/ul/li')
+        #page_list = page.xpath('//div[@class="second-imgbox"]/ul/li')
 
         page_list = page.xpath('//div[@class="second-imgbox"]')
         app_text = page.xpath('//div[@class="app-text"]/h3/text()').extract()
-        # recommended_type = app_text[2].encode('utf-8')
-        # print type(recommended_type)
+        #recommended_type = app_text[2].encode('utf-8')
+        #print type(recommended_type)
 
 
         developer_recommended = []
         related_recommended = []
+
+        # developer_recommended = {}
+        # related_recommended = {}
+
+        # developer_recommended = defaultdict(list)
+        # related_recommended = defaultdict(list)
+
         # print page_list.__len__()
 
         if page_list.__len__() == 2:
@@ -89,11 +97,14 @@ class XiaomiSpider(Spider):
                 url = l.xpath('./a/@href').extract_first()
                 appid = re.match(r'/detail/(\d+)', url).group(1)
                 developer_recommended.append(appid)
+                # developer_recommended.update({'develop_app': appid})
             page_list_2 = page_list[1].xpath('./ul/li')
             for l in page_list_2:
                 url = l.xpath('./a/@href').extract_first()
                 appid = re.match(r'/detail/(\d+)', url).group(1)
                 related_recommended.append(appid)
+                # related_recommended[item['appid']].append(appid)
+                # related_recommended.update({'related_app': appid})
         elif app_text.__len__() < 3: # recommended_type ==
             pass
         else:
@@ -108,15 +119,17 @@ class XiaomiSpider(Spider):
                     url = l.xpath('./a/@href').extract_first()
                     appid = re.match(r'/detail/(\d+)', url).group(1)
                     developer_recommended.append(appid)
+                    # developer_recommended.update({'develop_app': appid})
             elif recommended_type == sr:
                 for l in page_list_1:
                     url = l.xpath('./a/@href').extract_first()
                     appid = re.match(r'/detail/(\d+)', url).group(1)
                     related_recommended.append(appid)
+                    # related_recommended[item['appid']].append(appid)
+                    # related_recommended.update({'related_app': appid})
 
-
-        # recommended = []
-        # for l in page_list:
+        #recommended = []
+        #for l in page_list:
             # url = l.xpath('./a/@href').extract_first()
             # appid = re.match(r'/detail/(\d+)', url).group(1)
             # recommended.append(appid)
@@ -148,12 +161,23 @@ class XiaomiSpider(Spider):
         # print item['version']
         # print item['update_time']
 
+        image = page.xpath('//div[@class="app-info"]/img/@src').extract_first()
+        item['image'] = image
+        # print item['image']
+
         # item['developerrec'] = developer_recommended
         # item['relatedrec'] = related_recommended
-        item['developerrec'] = " ".join(developer_recommended)
-        item['relatedrec'] = " ".join(related_recommended)
+        # print eval(developer_recommended)
+        # item['developerrec'] = " ".join(developer_recommended)
+        # item['relatedrec'] = " ".join(related_recommended)
 
-        print type(item['developerrec'])
+        item['developerrec'] = [int(x) for x in developer_recommended]
+        # item['developerrec'] = [str(x) for x in developer_recommended]
+        item['relatedrec'] = [int(x) for x in related_recommended]
+
+        # print item['developerrec']
+        # print item['relatedrec']
+        # print type(item['relatedrec'])
 
         # item["recommended"] = recommended
         # item['developer_recommended'] = developer_recommended

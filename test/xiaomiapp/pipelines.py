@@ -76,6 +76,9 @@ class XiaomiElasticSearchPipeline(object):
             self.index_item(item)
         # index_name = self.settings['ELASTICSEARCH_INDEX']
         # self.es.index(dict(item), index_name, self.settings['ELASTICSEARCH_TYPE'], op_type='create')
+        # if self.es.search_exists(self.settings['ELASTICSEARCH_INDEX'], self.settings['ELASTICSEARCH_TYPE']):
+        #      self.es.delete(self.settings['ELASTICSEARCH_INDEX'], self.settings['ELASTICSEARCH_TYPE'], id=item['appid'], )
+        # print self.es.search(self.settings['ELASTICSEARCH_INDEX'])
         logging.info("Remove old values in Elasticsearch if exit")
         self.es.delete(self.settings['ELASTICSEARCH_INDEX'], self.settings['ELASTICSEARCH_TYPE'], id=item['appid'], ignore=[400, 404])
         self.es.index(self.settings['ELASTICSEARCH_INDEX'], self.settings['ELASTICSEARCH_TYPE'], dict(item), id=item['appid'], op_type='create', )
@@ -97,7 +100,7 @@ class XiaomiSolrPipeline(object):
         self.solr = pysolr.Solr(settings['SOLR_URL'], timeout=10)
 
         # self.solr.delete(q='*:*')
-
+        print self.mapping
         # print settings['SOLR_MAPPING']
 
     def process_item(self, item, spider):
@@ -106,7 +109,10 @@ class XiaomiSolrPipeline(object):
             query = " ".join(duplicates)
             result = self.solr.search(query)
             print query
-            print result
+            # print result
+            # element = [self.get_value(item, value) for name, value in self.mapping]
+            element = [self.get_value(item, value) for name, value in self.mapping]
+            print element
             # result = None
             if result:
                 # logging.info("Skip duplicates in Solr")
@@ -132,12 +138,13 @@ class XiaomiSolrPipeline(object):
         return item
 
     def get_value(self, item, value):
-        if type(value) is str:
-            return item[value] if value in item else None
-        elif type(value) is list:
-            return [item[key] if key in item else None for key in value]
-        else:
-            raise TypeError('Only string and list are valid sources')
+        # if type(value) is str:
+        #     return item[value] if value in item else None
+        # elif type(value) is list:
+        #     return [item[key] if key in item else None for key in value]
+        # else:
+        #     raise TypeError('Only string and list are valid sources')
+        return item[value] if value in item else None
 
 class XiaomiMongoDBPipeline(object):
     def __init__(self):
@@ -172,20 +179,23 @@ class XiaomiMongoDBPipeline(object):
             # if True:
                 logging.info("Remove old values in MongoDB")
                 self.collection.delete_one(result)
+            # else:
+            #    self.collection.update(result, dict(item))
 
-            self.collection.insert(dict(item))
             # logging.info("Item added to MongoDB database!")
             # log.msg("Item added to MongoDB database!",
             #        level=log.DEBUG, spider=spider)
             logging.debug("Item added to MongoDB database!")
+            self.collection.insert(dict(item))
+
             return item
 
-    def __get_itemvalue__(self, item, value):
-        if type(value) is str:
-            return item[value] if value in item else None
-        elif type(value) is list:
-            return [item[key] if key in item else None for key in value]
-        else:
-            raise TypeError('Only string and list are valid sources')
+    # def __get_itemvalue__(self, item, value):
+    #     if type(value) is str:
+    #         return item[value] if value in item else None
+    #     elif type(value) is list:
+    #         return [item[key] if key in item else None for key in value]
+    #     else:
+    #         raise TypeError('Only string and list are valid sources')
 
 
