@@ -68,7 +68,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     'xiaomiapp.pipelines.XiaomiMongoDBPipeline': 300,
     'xiaomiapp.pipelines.XiaomiSolrPipeline': 200,
-    'xiaomiapp.pipelines.XiaomiElasticSearchPipeline': 100,
+    'xiiaomiapp.pipelines.XiaomiElasticSearchPipeline': 100,
 }
 
 # MONGODB settings
@@ -94,7 +94,7 @@ ELASTICSEARCH_TYPE = 'items'
 
 # SOLR settings
 # SOLR_URL = 'http://localhost:8983/solr/scrapy'
-SOLR_URL = 'http://localhost:8983/solr/sample'
+SOLR_URL = 'http://localhost:8983/solr/test'
 # SOLR_MAPPING = {
 #   'appurl': 'appurl',
 #   'title': 'title',
@@ -107,7 +107,8 @@ SOLR_URL = 'http://localhost:8983/solr/sample'
 #   'version': 'version',
 #   'update_time': 'update_time',
 #   'developer_recommended': 'developer_recommended',
-#   'related_recommended': 'related_recommended'
+#   'related_recommended': 'related_recommended',
+#   'image': 'image'
 # }
 SOLR_MAPPING = {
   'appurl': 'appurl',
@@ -121,7 +122,8 @@ SOLR_MAPPING = {
   'version': 'version',
   'updatetm': 'updatetm',
   'developerrec': 'developerrec',
-  'relatedrec': 'relatedrec'
+  'relatedrec': 'relatedrec',
+  'image': 'image'
 }
 SOLR_IGNORE_DUPLICATES = True
 SOLR_DUPLICATES_KEY_FIELDS = ['appid']

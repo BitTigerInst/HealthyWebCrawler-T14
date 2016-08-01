@@ -1,25 +1,17 @@
-// import webpack from 'webpack';
-// import WebpackDevServer from 'webpack-dev-server';
-// import config from './webpack.config';
+var router = require('./routes/route');
+var app = require('express')();
 
-webpack = require('webpack');
-WebpackDevServer = require('webpack-dev-server');
-config = require('./webpack.config');
-
-const port = 9000,
-      host = 'localhost';
-
-new WebpackDevServer(webpack(config), {
-  publicPath: config.output.publicPath,
-  hot: true,
-  stats: {
-    colors: true
-  },
-  historyApiFallback: true
-}).listen(port, host, function (err, result) {
-  if (err) {
-    console.log(err);
-  }
-
-  console.log(`Listening at ${host}:${port}`);
+app.all(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods: PUT, GET, POST");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
+
+var cors = require('cors');
+app.use(cors());
+
+app.use('/', router);
+app.listen(3000);
+
+console.log('Magic');
