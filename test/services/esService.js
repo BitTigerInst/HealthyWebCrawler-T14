@@ -8,15 +8,33 @@ var client = new elasticsearch.Client({
 var index = "scrapy";
 var type = "xiaomiapp";
 
-function performSearch(query) {
+function performSearch(name, category) {
+    if (category == "all") {
+        return client.search({
+            index: 'scrapy',
+            type: 'xiaomiapp',
+            body: {
+                query: {
+                  match: {
+                     _all: name
+                  }
+                }
+            }
+        })
+ 
+    }
+
     return client.search({
 	index: 'scrapy',
 	type: 'xiaomiapp',
 	body: {
 	    query: {
-	      match: {
-	        _all: query
-	      }
+	      "bool": {
+                "must": [
+                  { "match": { "title": name}},
+                  { "match": { "category": category}}
+                ]
+              }
 	    }
         }
     })
