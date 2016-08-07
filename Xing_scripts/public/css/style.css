@@ -1,0 +1,148 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+body {
+  background-color: #ddd;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// .container {
+//   max-width: 100%;
+//   margin-left: auto;
+//   margin-right: auto;
+// }
+
+// .container::after {
+//   clear: both;
+//   content: "";
+//   display: table;
+// }
+
+/* header */
+header {
+  padding: 60px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h2 {
+  font-size: 2.4em;
+}
+
+.title {
+  font-weight: bold;
+}
+
+#form {
+  margin-bottom: 60px;
+}
+
+#form input[type=submit] {
+  width: 100%;
+}
+
+.app-list .app-item {
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.app-list .app-item a,
+.app-list .app-item h5,
+.app-list .app-item h6 {
+  overflow: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-list .app-item h5,
+.app-list .app-item h6,
+.app-list .app-item .stars {
+  margin-top: 0.55em;
+}
+
+.app-list .app-item h5 {
+  color: #000;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.app-list .app-item h6 {
+  color: #222;
+  font-size: 1.1em;
+}
+
+.app-list .app-item img.app-image {
+  width: 100%;
+}
+
+.app-list .app-item .stars,
+.app-list .app-item .stars span {
+    display: block;
+    background: url(../images/stars.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+.app-list .app-item .stars span {
+    background-position: 0 0;
+}
+
+@media (min-width: 1024px) {
+  .col-xl-15 {
+    float: left;
+    width: 20%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .col-xxl-2 {
+    float: left;
+    width: 16.666667%;
+  }
+}
