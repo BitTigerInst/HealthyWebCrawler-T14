@@ -6,18 +6,19 @@ Healthy Crawler is a tool to gather all apps information from Xiaomi appstore. U
 ##Motivation
 By showing the apps' information in from the search box provided by our website, user can finally understand the status of app and get the better search result the app store provided.
 
+##Usage
+Install lastest verison of Node.JS, ElasticSearch, MongoDB  
+npm install  
+Run elasticsearch and MongoDB
+supervisor ./bin/www  
+webpack --watch  
+Test page with url localhost:3000
+
 ##Components
 This project consists of two components:
 
 A crawler to dig the app information(title, category, icon, rating, etc) from appstore.  
 A webpage including back-end and front-end to provide the search-box to let user can search apps according the filters. 
-
-##Usage
-Install lastest verison of Node.JS, ElasticSearch, MongoDB  
-npm install  
-supervisor ./bin/www  
-webpack --watch  
-Test page with url localhost:3000
 
 ##Crawler
 
@@ -74,7 +75,7 @@ function(err, results) {
 });
 ```
 ##To Do List
-[ ] token in chinese searching in elasticsearch  
+[ ] Token in Chinese searching in elasticsearch  
 [ ] Frond-end design  
 [ ] Optimize the scrapy in distrbuted systems and multiple IPs 
 
